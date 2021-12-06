@@ -1,11 +1,13 @@
 ﻿using Caleb_Liu_Assignment_1.Data;
 using Caleb_Liu_Assignment_1.Models;
+using Caleb_Liu_Assignment_1.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,17 +30,11 @@ namespace Caleb_Liu_Assignment_1.Controllers
         }
 
         [Authorize]
-        public IActionResult Account()
+        public IActionResult Account ()
         {
-            // Get user name of user who is logged in.
-            // This line must be in the controller.
-            string userName = User.Identity.Name;
-
-            // Usually this section would be in a repository.
-            var registeredUser = _context.Users.Where(ru => ru.Email == userName)
-                                .FirstOrDefault();// Use FirstOrDefault() when getting one item
-
-            return View(registeredUser);
+            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
+            var query = adRepo.GetAll(UserPrincipal.Current.EmailAddress);
+            return View(query);
         }
 
         public IActionResult Privacy()

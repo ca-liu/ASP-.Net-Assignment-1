@@ -73,7 +73,7 @@ namespace Caleb_Liu_Assignment_1.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Home/Account");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         

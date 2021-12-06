@@ -17,11 +17,11 @@ namespace Caleb_Liu_Assignment_1.Repositories
             db = context;
         }
 
-        public IQueryable<AccountDetailsVM> GetAll()
+        public IQueryable<AccountDetailsVM> GetAll(string Email)
         {
             var query = from c in db.Client
                         from ca in db.ClinetAccount
-                        where c.ClientID == ca.ClientID
+                        where c.Email == Email
                         select new AccountDetailsVM()  // Create new object using
                         {                             // our view model class.
                             ClientID = c.ClientID,
@@ -36,10 +36,10 @@ namespace Caleb_Liu_Assignment_1.Repositories
             return query;
         }
 
-        public AccountDetailsVM Get(int clientID, int accountNum)
+        public AccountDetailsVM Get(string Email, int accountNum)
         {
-            var query = GetAll()
-                .Where(ad => ad.ClientID == clientID && ad.AccountNum == accountNum)
+            var query = GetAll(Email)
+                .Where(ad => ad.Email == Email && ad.AccountNum == accountNum)
                 .FirstOrDefault();
             return query;
         }
