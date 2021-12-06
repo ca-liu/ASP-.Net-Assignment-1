@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Caleb_Liu_Assignment_1.Data
@@ -10,6 +11,7 @@ namespace Caleb_Liu_Assignment_1.Data
     public class Client
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Client ID")]
         [Required]
         public int ClientID { get; set; }
@@ -33,6 +35,7 @@ namespace Caleb_Liu_Assignment_1.Data
     public class BankAccount
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Account Number")]
         [Required]
         public int AccountNum { get; set; }

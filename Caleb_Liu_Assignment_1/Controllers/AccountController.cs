@@ -20,7 +20,7 @@ namespace Caleb_Liu_Assignment_1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+/*        public IActionResult Index()
         {
             ApplicationDbContext context = new ApplicationDbContext();
             AccountDetailsRepo adRepo = new AccountDetailsRepo(context);
@@ -64,6 +64,6 @@ namespace Caleb_Liu_Assignment_1.Controllers
             AccountDetailsRepo adRepo = new AccountDetailsRepo(context);
             var query = adRepo.Delete(accountNum);
             return View(query);
-        }
+        }*/
     }
 }
