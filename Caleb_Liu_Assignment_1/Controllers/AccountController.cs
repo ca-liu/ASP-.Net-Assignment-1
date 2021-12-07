@@ -23,30 +23,6 @@ namespace Caleb_Liu_Assignment_1.Controllers
             _context = context;
         }
 
-        [Authorize]
-        public IActionResult Account()
-        {
-            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
-            var query = adRepo.GetAll(UserPrincipal.Current.EmailAddress);
-            return View(query);
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create([Bind("AccountType,Balance")] BankAccount bankAccount)
-        {
-            if(ModelState.IsValid)
-            {
-                _context.BankAccount.Add(bankAccount);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(bankAccount);
-        }
 
 /*        public IActionResult Details(int clientID, int accountNum)
         {

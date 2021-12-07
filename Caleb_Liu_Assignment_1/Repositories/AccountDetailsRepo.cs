@@ -19,21 +19,44 @@ namespace Caleb_Liu_Assignment_1.Repositories
 
         public IQueryable<AccountDetailsVM> GetAll(string Email)
         {
-            var query = from c in db.Client
-                        from ca in db.ClinetAccount
-                        where c.Email == Email
-                        select new AccountDetailsVM()  // Create new object using
-                        {                             // our view model class.
-                            ClientID = c.ClientID,
-                            FirstName = c.FirstName,
-                            LastName = c.LastName,
-                            Email = c.Email,
+            var clientQuery = (from c in db.Client
+                               where c.Email == Email
+                               select c).FirstOrDefault();
+
+            var query = from ca in db.ClinetAccount
+                        where ca.ClientID == clientQuery.ClientID
+                        select new AccountDetailsVM()
+                        {
+                            FirstName = clientQuery.FirstName,
+                            LastName = clientQuery.LastName,
+                            Email = clientQuery.Email,
                             AccountNum = ca.AccountNum,
                             AccountType = ca.BankAccount.AccountType,
                             Balance = ca.BankAccount.Balance
                         };
 
             return query;
+        }
+
+        public bool Create(BankAccount bankAccount, string Email)
+        {
+            var clinetIDQuery = (from c in db.Client
+                                 where c.Email == Email
+                                 select c).FirstOrDefault();
+
+            int theClientID = clinetIDQuery.ClientID;
+            db.BankAccount.Add(bankAccount);
+            db.SaveChanges();
+
+            ClientAccount clientAccount = new ClientAccount()
+            {
+                ClientID = theClientID,
+                AccountNum = bankAccount.AccountNum
+            };
+
+            db.ClinetAccount.Add(clientAccount);
+            db.SaveChanges();
+            return true;
         }
 
         public AccountDetailsVM Get(string Email, int accountNum)
