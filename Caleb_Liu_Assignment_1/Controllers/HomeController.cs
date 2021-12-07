@@ -29,27 +29,6 @@ namespace Caleb_Liu_Assignment_1.Controllers
             return View();
         }
 
-        [Authorize]
-        public IActionResult Account ()
-        {
-            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
-            var query = adRepo.GetAll(User.Identity.Name);
-            return View(query);
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create([Bind("AccountType,Balance")] BankAccount bankAccount)
-        {
-            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
-            adRepo.Create(bankAccount, User.Identity.Name);
-            return View();
-        }
-
         public IActionResult Privacy()
         {
             return View();

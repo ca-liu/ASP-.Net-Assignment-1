@@ -23,7 +23,7 @@ namespace Caleb_Liu_Assignment_1.Repositories
                                where c.Email == Email
                                select c).FirstOrDefault();
 
-            var query = from ca in db.ClinetAccount
+            var query = from ca in db.ClientAccount
                         where ca.ClientID == clientQuery.ClientID
                         select new AccountDetailsVM()
                         {
@@ -40,11 +40,11 @@ namespace Caleb_Liu_Assignment_1.Repositories
 
         public bool Create(BankAccount bankAccount, string Email)
         {
-            var clinetIDQuery = (from c in db.Client
+            var clientIDQuery = (from c in db.Client
                                  where c.Email == Email
                                  select c).FirstOrDefault();
 
-            int theClientID = clinetIDQuery.ClientID;
+            int theClientID = clientIDQuery.ClientID;
             db.BankAccount.Add(bankAccount);
             db.SaveChanges();
 
@@ -54,16 +54,27 @@ namespace Caleb_Liu_Assignment_1.Repositories
                 AccountNum = bankAccount.AccountNum
             };
 
-            db.ClinetAccount.Add(clientAccount);
+            db.ClientAccount.Add(clientAccount);
             db.SaveChanges();
             return true;
         }
 
-        public AccountDetailsVM Get(string Email, int accountNum)
+        public AccountDetailsVM Get(int accountNum)
         {
-            var query = GetAll(Email)
-                .Where(ad => ad.Email == Email && ad.AccountNum == accountNum)
-                .FirstOrDefault();
+
+            var query = (from ca in db.ClientAccount
+                        where ca.AccountNum == accountNum
+                        select new AccountDetailsVM()
+                        {
+                            ClientID = ca.ClientID,
+                            FirstName = ca.Client.FirstName,
+                            LastName = ca.Client.LastName,
+                            Email = ca.Client.Email,
+                            AccountNum = ca.BankAccount.AccountNum,
+                            AccountType = ca.BankAccount.AccountType,
+                            Balance = ca.BankAccount.Balance
+                        }).FirstOrDefault();
+
             return query;
         }
 
@@ -72,18 +83,14 @@ namespace Caleb_Liu_Assignment_1.Repositories
             BankAccount bankAccount = db.BankAccount
                             .Where(b => b.AccountNum == adVM.AccountNum)
                             .FirstOrDefault();
-            bankAccount.AccountType = adVM.AccountType;
             bankAccount.Balance = adVM.Balance;
-            db.SaveChanges();
-            return true;
-        }
 
-        public bool Delete(int accountNum)
-        {
-            BankAccount bankAccount = db.BankAccount
-                                        .Where(b => b.AccountNum == accountNum)
-                                        .FirstOrDefault();
-            db.Remove(bankAccount);
+            Client client = db.Client
+                .Where(c => c.ClientID == adVM.ClientID)
+                .FirstOrDefault();
+            client.FirstName = adVM.FirstName;
+            client.LastName = adVM.LastName;
+
             db.SaveChanges();
             return true;
         }

@@ -23,19 +23,40 @@ namespace Caleb_Liu_Assignment_1.Controllers
             _context = context;
         }
 
-
-/*        public IActionResult Details(int clientID, int accountNum)
+        [Authorize]
+        public IActionResult Index()
         {
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
-            var query = adRepo.Get(clientID, accountNum);
+            var query = adRepo.GetAll(User.Identity.Name);
             return View(query);
         }
 
         [HttpGet]
-        public ActionResult Edit(int clientID, int accountNum)
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create([Bind("AccountType,Balance")] BankAccount bankAccount)
         {
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
-            var query = adRepo.Get(clientID, accountNum);
+            adRepo.Create(bankAccount, User.Identity.Name);
+            return RedirectToAction("Index", "Account");
+        }
+
+        public IActionResult Details(int accountNum)
+        {
+            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
+            var query = adRepo.Get(accountNum);
+            return View(query);
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int accountNum)
+        {
+            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
+            var query = adRepo.Get(accountNum);
             return View(query);
         }
 
@@ -46,15 +67,7 @@ namespace Caleb_Liu_Assignment_1.Controllers
         {
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
             adRepo.Update(adVM);
-
             return RedirectToAction("Index", "Account");
-        }*/
-
-        public IActionResult Delete(int accountNum)
-        {
-            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
-            var query = adRepo.Delete(accountNum);
-            return View(query);
         }
     }
 }

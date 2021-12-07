@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Caleb_Liu_Assignment_1.ViewModels.AccountDetailsVM>
 
 @{
-    ViewData["Title"] = "Account";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Account</h1>
@@ -49,9 +49,8 @@
                 @Html.DisplayFor(modelItem => item.Balance)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { accountNum=item.AccountNum }) |
+                @Html.ActionLink("Details", "Details", new { accountNum=item.AccountNum}) 
             </td>
         </tr>
 }

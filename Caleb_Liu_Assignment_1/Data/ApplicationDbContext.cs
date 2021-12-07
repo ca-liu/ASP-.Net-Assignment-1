@@ -29,7 +29,7 @@ namespace Caleb_Liu_Assignment_1.Data
 
         // Navigation properties.
         // Child.        
-        public virtual ICollection<ClientAccount> ClinetAccount { get; set; }
+        public virtual ICollection<ClientAccount> ClientAccount { get; set; }
     }
 
     public class BankAccount
@@ -43,12 +43,13 @@ namespace Caleb_Liu_Assignment_1.Data
         [Display(Name = "Account Type")]
         [Required(ErrorMessage = "Account type required.")]
         public string AccountType { get; set; }
-        [Range(typeof(decimal), "0.0001", "79228162514264337593543950335")]
+        [Range(0.001, int.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [DisplayFormat(DataFormatString = "{0:C0}", ApplyFormatInEditMode = true)]
         public decimal Balance { get; set; }
 
         // Navigation properties.
         // Child.        
-        public virtual ICollection<ClientAccount> ClinetAccount { get; set; }
+        public virtual ICollection<ClientAccount> ClientAccount { get; set; }
 
     }
 
@@ -81,7 +82,7 @@ namespace Caleb_Liu_Assignment_1.Data
         //Define entity collections.
         public DbSet<Client> Client { get; set; }
         public DbSet<BankAccount> BankAccount { get; set; }
-        public DbSet<ClientAccount> ClinetAccount { get; set; }
+        public DbSet<ClientAccount> ClientAccount { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -93,13 +94,13 @@ namespace Caleb_Liu_Assignment_1.Data
             // Define foreign keys here. Do not use foreign key annotations.
             modelBuilder.Entity<ClientAccount>()
                 .HasOne(c => c.Client)
-                .WithMany(ca => ca.ClinetAccount)
+                .WithMany(ca => ca.ClientAccount)
                 .HasForeignKey(fk => new { fk.ClientID })
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
 
             modelBuilder.Entity<ClientAccount>()
                 .HasOne(b => b.BankAccount)
-                .WithMany(ca => ca.ClinetAccount)
+                .WithMany(ca => ca.ClientAccount)
                 .HasForeignKey(fk => new { fk.AccountNum})
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
         }
