@@ -42,15 +42,15 @@ namespace Caleb_Liu_Assignment_1.Repositories
         {
             var clientIDQuery = (from c in db.Client
                                  where c.Email == Email
-                                 select c).FirstOrDefault();
+                                 select c.ClientID).FirstOrDefault();
 
-            int theClientID = clientIDQuery.ClientID;
+
             db.BankAccount.Add(bankAccount);
             db.SaveChanges();
 
             ClientAccount clientAccount = new ClientAccount()
             {
-                ClientID = theClientID,
+                ClientID = clientIDQuery,
                 AccountNum = bankAccount.AccountNum
             };
 
