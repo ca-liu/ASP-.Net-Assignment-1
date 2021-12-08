@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Caleb_Liu_Assignment_1.Data;
+using Caleb_Liu_Assignment_1.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -63,6 +64,14 @@ namespace Caleb_Liu_Assignment_1.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [Display(Name = "Account Type")]
+            public string AccountType { get; set; }
+
+            [Required]
+            [DataType(DataType.Currency)]
+            public decimal Balance { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -98,6 +107,19 @@ namespace Caleb_Liu_Assignment_1.Areas.Identity.Pages.Account
                     };
                     _context.Client.Add(client);
                     _context.SaveChanges();
+
+                    BankAccount bankAccount = new BankAccount()
+                    {
+                        AccountType = Input.AccountType,
+                        Balance = Input.Balance,
+
+                    };
+                    _context.BankAccount.Add(bankAccount);
+                    _context.SaveChanges();
+
+                    AccountDetailsRepo acRepo = new AccountDetailsRepo(_context);
+                    acRepo.CreateNewAccount(bankAccount, client);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -25,6 +25,7 @@ namespace Caleb_Liu_Assignment_1.ViewModels
         [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Only letters are allowed")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "Email required.")]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Range(0.001, int.MaxValue, ErrorMessage = "Please enter a number greater than 0")]

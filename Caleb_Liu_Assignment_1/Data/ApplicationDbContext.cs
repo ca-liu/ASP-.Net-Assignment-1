@@ -17,14 +17,17 @@ namespace Caleb_Liu_Assignment_1.Data
         public int ClientID { get; set; }
 
         [Display(Name = "First Name")]
+        [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Only letters are allowed")]
         [Required(ErrorMessage = "First name required.")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
+        [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Only letters are allowed")]
         [Required(ErrorMessage = "Last name required.")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Email required.")]
+        [EmailAddress]
         public string Email { get; set; }
 
         // Navigation properties.

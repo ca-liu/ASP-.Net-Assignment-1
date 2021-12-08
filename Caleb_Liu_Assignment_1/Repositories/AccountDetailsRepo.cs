@@ -122,5 +122,26 @@ namespace Caleb_Liu_Assignment_1.Repositories
             db.SaveChanges();
             return true;
         }
+
+        public bool CreateNewAccount(BankAccount ba, Client cl)
+        {
+            var client = (from c in db.Client
+                          where c.ClientID == cl.ClientID
+                          select c).FirstOrDefault();
+
+            var bAccount = (from b in db.BankAccount
+                            where b.AccountNum == ba.AccountNum
+                            select b).FirstOrDefault();
+
+            ClientAccount ca = new ClientAccount()
+            {
+                AccountNum = bAccount.AccountNum,
+                ClientID = client.ClientID
+            };
+
+            db.ClientAccount.Add(ca);
+            db.SaveChanges();
+            return true;
+        }
     }
 }
