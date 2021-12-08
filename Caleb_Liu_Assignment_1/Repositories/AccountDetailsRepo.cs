@@ -25,6 +25,7 @@ namespace Caleb_Liu_Assignment_1.Repositories
 
             var query = from ca in db.ClientAccount
                         where ca.ClientID == clientQuery.ClientID
+                        orderby ca.AccountNum descending
                         select new AccountDetailsVM()
                         {
                             FirstName = clientQuery.FirstName,
@@ -36,6 +37,14 @@ namespace Caleb_Liu_Assignment_1.Repositories
                         };
 
             return query;
+        }
+
+        public Client GetClient(string Email)
+        {
+            var clientIDQuery = (from c in db.Client
+                                 where c.Email == Email
+                                 select c).FirstOrDefault();
+            return clientIDQuery;
         }
 
         public bool Create(BankAccount bankAccount, string Email)
@@ -91,6 +100,25 @@ namespace Caleb_Liu_Assignment_1.Repositories
             client.FirstName = adVM.FirstName;
             client.LastName = adVM.LastName;
 
+            db.SaveChanges();
+            return true;
+        }
+
+        public bool Delete(int AccountNum)
+        {
+            //Remove form bridgeTable firt
+            var baBT = (from ca in db.ClientAccount
+                        where ca.AccountNum == AccountNum
+                        select ca).FirstOrDefault();
+
+            db.ClientAccount.Remove(baBT);
+            db.SaveChanges();
+
+            var ba = (from b in db.BankAccount
+                      where b.AccountNum == AccountNum
+                      select b).FirstOrDefault();
+
+            db.BankAccount.Remove(ba);
             db.SaveChanges();
             return true;
         }

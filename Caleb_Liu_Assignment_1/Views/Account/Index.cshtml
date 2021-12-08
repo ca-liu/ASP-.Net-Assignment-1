@@ -50,7 +50,8 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { accountNum=item.AccountNum }) |
-                @Html.ActionLink("Details", "Details", new { accountNum=item.AccountNum}) 
+                @Html.ActionLink("Details", "Details", new { accountNum=item.AccountNum}) |
+                @Html.ActionLink("Delete", "Delete", new { accountNum=item.AccountNum}) 
             </td>
         </tr>
 }

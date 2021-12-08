@@ -26,8 +26,9 @@ namespace Caleb_Liu_Assignment_1.ViewModels
         public string LastName { get; set; }
         [Required(ErrorMessage = "Email required.")]
         public string Email { get; set; }
-        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
+
         [Range(0.001, int.MaxValue, ErrorMessage = "Please enter a number greater than 0")]
+        [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
     }
 }

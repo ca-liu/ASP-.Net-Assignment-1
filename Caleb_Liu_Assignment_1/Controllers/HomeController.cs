@@ -2,6 +2,7 @@
 using Caleb_Liu_Assignment_1.Models;
 using Caleb_Liu_Assignment_1.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,6 +27,12 @@ namespace Caleb_Liu_Assignment_1.Controllers
 
         public IActionResult Index()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
+                string firstName = adRepo.GetClient(User.Identity.Name).FirstName;
+                HttpContext.Session.SetString("NAME_KEY", firstName);
+            }
             return View();
         }
 

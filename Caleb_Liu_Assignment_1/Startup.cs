@@ -27,6 +27,13 @@ namespace Caleb_Liu_Assignment_1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add this before AddMvc() is called.
+            services.AddSession(options =>
+            {
+                // Set timeout.
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite("Data Source=.\\wwwroot\\sql.db"));
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -57,6 +64,7 @@ namespace Caleb_Liu_Assignment_1
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

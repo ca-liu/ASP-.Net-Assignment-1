@@ -43,8 +43,8 @@ namespace Caleb_Liu_Assignment_1.Data
         [Display(Name = "Account Type")]
         [Required(ErrorMessage = "Account type required.")]
         public string AccountType { get; set; }
-        [Range(0.001, int.MaxValue, ErrorMessage = "Only positive number allowed")]
-        [DisplayFormat(DataFormatString = "{0:C0}", ApplyFormatInEditMode = true)]
+        [Range(0.001, int.MaxValue, ErrorMessage = "Please enter a number greater than 0")]
+        [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
 
         // Navigation properties.

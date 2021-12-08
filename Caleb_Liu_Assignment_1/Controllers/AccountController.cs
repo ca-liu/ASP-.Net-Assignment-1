@@ -2,6 +2,7 @@
 using Caleb_Liu_Assignment_1.Repositories;
 using Caleb_Liu_Assignment_1.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
@@ -17,7 +18,6 @@ namespace Caleb_Liu_Assignment_1.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-
         public AccountController(ApplicationDbContext context)
         {
             _context = context;
@@ -28,6 +28,8 @@ namespace Caleb_Liu_Assignment_1.Controllers
         {
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
             var query = adRepo.GetAll(User.Identity.Name);
+            string firstName = adRepo.GetClient(User.Identity.Name).FirstName;
+            HttpContext.Session.SetString("NAME_KEY", firstName);
             return View(query);
         }
 
@@ -67,6 +69,22 @@ namespace Caleb_Liu_Assignment_1.Controllers
         {
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
             adRepo.Update(adVM);
+            return RedirectToAction("Index", "Account");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int accountNum, int clientID)
+        {
+            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
+            var query = adRepo.Get(accountNum);
+            return View(query);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int accountNum)
+        {
+            AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
+            var query = adRepo.Delete(accountNum);
             return RedirectToAction("Index", "Account");
         }
     }
