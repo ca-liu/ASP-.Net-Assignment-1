@@ -40,11 +40,11 @@ namespace Caleb_Liu_Assignment_1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("AccountType,Balance")] BankAccount bankAccount)
+        public IActionResult Create([Bind("AccountType,Balance")] AccountDetailsVM bankAccount)
         {
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
-            adRepo.Create(bankAccount, User.Identity.Name);
-            return RedirectToAction("Index", "Account");
+            var newAccount = adRepo.Create(bankAccount, User.Identity.Name);
+            return RedirectToAction("Details","Account", newAccount);
         }
 
         public IActionResult Details(int accountNum)
@@ -57,6 +57,7 @@ namespace Caleb_Liu_Assignment_1.Controllers
         [HttpGet]
         public ActionResult Edit(int accountNum)
         {
+            
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
             var query = adRepo.Get(accountNum);
             return View(query);
@@ -69,7 +70,7 @@ namespace Caleb_Liu_Assignment_1.Controllers
         {
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
             adRepo.Update(adVM);
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Details", "Account", adVM);
         }
 
         [HttpGet]

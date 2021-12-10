@@ -1,5 +1,5 @@
 ﻿@model Caleb_Liu_Assignment_1.ViewModels.AccountDetailsVM
-
+@using Microsoft.AspNetCore.Http
 @{
     ViewData["Title"] = "Details";
 }
@@ -9,6 +9,7 @@
 <div>
     <h4>Account Details</h4>
     <hr />
+    @Html.Raw("<p>"+@Context.Session.GetString("MESSAE_KEY")+"</p>")
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ClientID)

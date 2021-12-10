@@ -50,12 +50,14 @@ namespace Caleb_Liu_Assignment_1.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "First name required.")]
             [Display(Name = "First Name")]
+            [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Only letters are allowed")]
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Last name required.")]
             [Display(Name = "Last Name")]
+            [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Only letters are allowed")]
             public string LastName { get; set; }
 
             [Required]

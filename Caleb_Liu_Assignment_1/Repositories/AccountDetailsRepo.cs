@@ -47,25 +47,42 @@ namespace Caleb_Liu_Assignment_1.Repositories
             return clientIDQuery;
         }
 
-        public bool Create(BankAccount bankAccount, string Email)
+        public AccountDetailsVM Create(AccountDetailsVM bankAccount, string Email)
         {
-            var clientIDQuery = (from c in db.Client
+            var clientQuery = (from c in db.Client
                                  where c.Email == Email
-                                 select c.ClientID).FirstOrDefault();
+                                 select c).FirstOrDefault();
 
+            var newBA = new BankAccount()
+            {
+                AccountType = bankAccount.AccountType,
+                Balance = bankAccount.Balance
+            };
 
-            db.BankAccount.Add(bankAccount);
+            db.BankAccount.Add(newBA);
             db.SaveChanges();
 
             ClientAccount clientAccount = new ClientAccount()
             {
-                ClientID = clientIDQuery,
-                AccountNum = bankAccount.AccountNum
+                ClientID = clientQuery.ClientID,
+                AccountNum = newBA.AccountNum
             };
 
             db.ClientAccount.Add(clientAccount);
             db.SaveChanges();
-            return true;
+
+            var query = new AccountDetailsVM()
+            {
+                ClientID = clientQuery.ClientID,
+                FirstName = clientQuery.FirstName,
+                LastName = clientQuery.LastName,
+                Email = clientQuery.Email,
+                AccountNum = newBA.AccountNum,
+                AccountType = newBA.AccountType,
+                Balance = newBA.Balance
+            };
+
+            return query;
         }
 
         public AccountDetailsVM Get(int accountNum)
