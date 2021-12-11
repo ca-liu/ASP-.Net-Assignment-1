@@ -9,7 +9,9 @@
 <div>
     <h4>Account Details</h4>
     <hr />
-    @Html.Raw("<p>"+@Context.Session.GetString("MESSAE_KEY")+"</p>")
+    @if(@ViewBag.Message != null){
+    @Html.Raw("<p style=color:green>"+ViewBag.Message+"</p>")
+    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ClientID)

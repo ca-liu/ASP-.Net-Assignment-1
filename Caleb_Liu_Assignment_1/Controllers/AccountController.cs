@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Caleb_Liu_Assignment_1.Controllers
 {
@@ -49,6 +50,11 @@ namespace Caleb_Liu_Assignment_1.Controllers
 
         public IActionResult Details(int accountNum)
         {
+            var requester = Request.Headers["Referer"].ToString();
+            if (requester.Length > 31)
+            {
+                ViewBag.Message = "Action was successful";
+            }
             AccountDetailsRepo adRepo = new AccountDetailsRepo(_context);
             var query = adRepo.Get(accountNum);
             return View(query);
@@ -63,8 +69,6 @@ namespace Caleb_Liu_Assignment_1.Controllers
             return View(query);
         }
 
-        // This method is called when the user clicks the submit
-        // button from the edit page.
         [HttpPost]
         public ActionResult Edit(AccountDetailsVM adVM)
         {
